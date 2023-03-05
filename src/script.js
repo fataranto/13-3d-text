@@ -14,20 +14,64 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+// Axes Helper
+//const axesHelper = new THREE.AxesHelper()
+//scene.add(axesHelper)
+
 /**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
 
 /**
+ *  Fonts
+ */
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
+
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+
+
+const loader = new FontLoader();
+
+loader.load(
+	// resource URL
+	'fonts/helvetiker_regular.typeface.json', function (font) {
+        const textGeometry = new TextGeometry(
+            'Hello Wol',
+            {
+                font: font,
+                size: 0.5,
+                height: 0.2,
+                curveSegments: 5,
+                bevelEnabled: true,
+                bevelThickness: 0.03,
+                bevelSize: 0.02,
+                bevelOffset: 0,
+                bevelSegments: 4
+            }
+        )
+        const textMaterial = new THREE.MeshBasicMaterial({wireframe: true})
+        const text = new THREE.Mesh(textGeometry, textMaterial)
+        scene.add(text)
+    }
+)
+
+
+
+
+
+
+
+/**
  * Object
  */
-const cube = new THREE.Mesh(
+
+/* const cube = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
     new THREE.MeshBasicMaterial()
 )
 
-scene.add(cube)
+scene.add(cube) */
 
 /**
  * Sizes
