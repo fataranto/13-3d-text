@@ -15,13 +15,14 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 // Axes Helper
-//const axesHelper = new THREE.AxesHelper()
-//scene.add(axesHelper)
+// const axesHelper = new THREE.AxesHelper()
+// scene.add(axesHelper)
 
 /**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+const matcapTexture = textureLoader.load('/textures/matcaps/3.png')
 
 /**
  *  Fonts
@@ -37,7 +38,7 @@ loader.load(
 	// resource URL
 	'fonts/helvetiker_regular.typeface.json', function (font) {
         const textGeometry = new TextGeometry(
-            'Hello Wol',
+            'Three js',
             {
                 font: font,
                 size: 0.5,
@@ -50,9 +51,38 @@ loader.load(
                 bevelSegments: 4
             }
         )
-        const textMaterial = new THREE.MeshBasicMaterial({wireframe: true})
-        const text = new THREE.Mesh(textGeometry, textMaterial)
+        /* textGeometry.computeBoundingBox()
+        textGeometry.translate(
+            - (textGeometry.boundingBox.max.x -0.02) * 0.5,
+            - (textGeometry.boundingBox.max.y -0.02) * 0.5,
+            - (textGeometry.boundingBox.max.z -0.03) * 0.5
+        ) */
+
+        textGeometry.center()
+
+
+        const material = new THREE.MeshMatcapMaterial({matcap: matcapTexture})
+        const text = new THREE.Mesh(textGeometry, material)
         scene.add(text)
+
+        const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 64)
+
+        for (let i = 0; i < 100; i++ ){
+            const donut = new THREE.Mesh(donutGeometry, material)
+
+            donut.position.x = (Math.random() - 0.5 ) * 10
+            donut.position.y = (Math.random() - 0.5 ) * 10
+            donut.position.z = (Math.random() - 0.5 ) * 10
+
+            donut.rotation.x = Math.random() * Math.PI
+            donut.rotation.y = Math.random() * Math.PI
+
+            const scale = Math.random()
+            donut.scale.set(scale, scale, scale)
+
+            scene.add(donut)
+            
+        }
     }
 )
 
